@@ -24,6 +24,7 @@ jobs:
       - name: Build Backend
         run: |
           cd backend
+          chmod +x mvnw             # Ensure mvnw is executable
           ./mvnw clean install
           cd ..
 
