@@ -65,16 +65,10 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/cicd-frontend:latest
           cd ..
 
-      # Add SSH Key to access the server
-      - name: Add SSH Key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       # SSH into the server and deploy
       - name: SSH and deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
             # Pull the latest backend Docker image
             docker pull ${{ secrets.DOCKER_USERNAME }}/cicd-backend:latest
             docker stop backend_container || true
