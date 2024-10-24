@@ -52,13 +52,13 @@ jobs:
       - name: Build and Push Backend Docker Image
         run: |
           cd backend
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-image:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/backend-image:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/cicd-backend:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/cicd-backend:latest
           cd ..
 
       # Build and Push Docker Image for Frontend
       - name: Build and Push Frontend Docker Image
         run: |
           cd frontend
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend-image:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/frontend-image:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/cicd-frontend:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/cicd-frontend:latest
