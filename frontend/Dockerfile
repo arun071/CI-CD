@@ -1,16 +1,29 @@
-FROM node:21-alpine
+# Stage 1: Build the React application
+FROM node:21-alpine AS build
 
+# Set working directory inside the container
 WORKDIR /app
 
-COPY package.json /app
+# Copy package.json and package-lock.json for installing dependencies
+COPY package.json package-lock.json ./
 
+# Install dependencies
 RUN npm install
 
-COPY . /app
+# Copy the entire app source code to the container
+COPY . .
 
-EXPOSE 5173
+# Build the React application
+RUN npm run build
 
-ENV VITE_PORT=5173
-ENV VITE_HOST=0.0.0.0
+# Stage 2: Serve the application
+FROM nginx:alpine
 
-CMD ["npm","run","dev"]
+# Copy the build output from the previous stage to Nginx's web root
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
